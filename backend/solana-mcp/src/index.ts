@@ -4,24 +4,25 @@
  * This file demonstrates how to create a Model Context Protocol (MCP) server
  * that interacts with the Solana devnet to check SOL balances.
  */
-
-// Import necessary dependencies
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { z } from "zod";
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import dotenv from 'dotenv';
 
-// 日志文件路径 - 使用用户临时目录，确保有写入权限
+// Load environment variables from .env file
+dotenv.config();
+
+// Log file path - use the user's temporary directory to ensure write permissions
 const LOG_FILE = path.join(os.tmpdir(), 'solana-mcp-server.log');
 
 /**
- * 记录日志到本地文件
- * @param level 日志级别
- * @param message 日志消息
- * @param data 附加数据
+ * Logs messages to a local file.
+ * @param level Log level
+ * @param message Log message
+ * @param data Additional data
  */
 function logToFile(level: LogLevel, message: string, data?: any) {
   const timestamp = new Date().toISOString();
@@ -33,13 +34,12 @@ function logToFile(level: LogLevel, message: string, data?: any) {
   
   logEntry += '\n';
   
-  // 写入日志文件（追加模式）
   fs.appendFileSync(LOG_FILE, logEntry);
   
-  // 同时输出到控制台
-  console.error(logEntry);
+  // Simultaneously output to the console
+  console.log(logEntry);
 }
-// 日志级别
+// log level
 enum LogLevel {
   DEBUG = 'DEBUG',
   INFO = 'INFO',
@@ -54,11 +54,11 @@ interface BalanceResult {
 }
 
 /**
- * 查询 Solana 地址的 SOL 余额，带有重试机制
- * @param connection Solana 网络连接实例
- * @param address 要查询的 Solana 地址
- * @param retries 重试次数
- * @returns 格式化的余额信息
+ * Query SOL balance of Solana address with retry mechanism
+ * @param connection Solana Network connection instance
+ * @param address Solana address to be queried
+ * @param retries retry count
+ * @returns Formatted balance information
  */
 export async function getSolanaBalance(
   connection: Connection, 
@@ -67,20 +67,17 @@ export async function getSolanaBalance(
 ): Promise<BalanceResult> {
   for (let i = 0; i < retries; i++) {
     try {
-      // 创建公钥对象
-      const publicKey = new PublicKey(address);
       
-      // 查询余额
+      const publicKey = new PublicKey(address);  
       const balance = await connection.getBalance(publicKey);
 
-      // 返回格式化的查询结果
       return {
         success: true,
         balance: balance / LAMPORTS_PER_SOL,
         error: null
       };
     } catch (error) {
-      // 如果是最后一次重试，则返回错误
+      // If it is the last retry, return an error
       if (i === retries - 1) {
         return {
           success: false,
@@ -88,25 +85,24 @@ export async function getSolanaBalance(
           error: error instanceof Error ? error.message : String(error)
         };
       }
-      // 否则等待后重试
+      // Otherwise, wait and retry
       await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
     }
   }
 
-  // 兜底返回
   return {
     success: false,
     balance: 0,
-    error: '查询余额失败：超过最大重试次数'
+    error: 'Balance query failed: exceeds maximum retry count'
   };
 }
 
 // Create a connection to Solana devnet
- const RPC_ENDPOINT = "https://crimson-dimensional-field.solana-devnet.quiknode.pro/4d9178b804f1a135bd98eb7d54a25969cb262f1e/";
+ const RPC_ENDPOINT = process.env.SOLANA_RPC_ENDPOINT || "https://api.devnet.solana.com"; // Fallback if not set
 
 const connection = new Connection(RPC_ENDPOINT, {
     commitment: "confirmed",
-    confirmTransactionInitialTimeout: 60000, // 60秒超时
+    confirmTransactionInitialTimeout: 60000, // 60 seconds timeout
   });
 
 // Initialize the MCP server with a name, version, and capabilities
@@ -121,16 +117,27 @@ server.tool(
     "get-sol-balance",
     "query my wallet balance",
     {
-        //address: z.string().describe("需要查询的 Solana 地址"),
+        //address: z.string().describe(" Solana address"),
     },
     async ({  }) => {
-        const address ="EQKsPeerwacq5L2kW7qPAjqnJMYhL7ousMY1HKsc219p";
-        // 查询余额
+        const address = process.env.DEFAULT_SOLANA_ADDRESS; // Fallback if not set
+      
+        if (!address) {
+            logToFile(LogLevel.ERROR, "DEFAULT_SOLANA_ADDRESS is not set in .env file.");
+            return {
+                content: [
+                    {
+                        type: "text",
+                        text: "Configuration error: Default Solana address is not set.",
+                    },
+                ],
+            };
+        }
+
         const result = await getSolanaBalance(connection, address);
 
-        // 返回查询结果
         if (result.success) {
-            logToFile(LogLevel.INFO, `余额查询成功，发送响应`, { address, balance: result.balance });
+            logToFile(LogLevel.INFO, `Balance query successful, send response`, { address, balance: result.balance });
             return {
                 content: [
                     {
@@ -140,7 +147,7 @@ server.tool(
                 ],
             };
         } else {
-            logToFile(LogLevel.ERROR, `余额查询失败，发送错误响应`, { address, error: result.error });
+            logToFile(LogLevel.ERROR, `Balance query failed, sending error response`, { address, error: result.error });
             return {
                 content: [
                     {
@@ -161,14 +168,14 @@ export { server };
  * Uses stdio for communication with LLM clients
  */
 async function main() {
-    // 创建日志文件（如果不存在）
+    // Create a log file (if it does not exist)
     try {
-        // 确保日志目录存在和可写
-        fs.writeFileSync(LOG_FILE, `[${new Date().toISOString()}] [INFO] ========== MCP 服务器启动 ==========\n`, { flag: 'a' });
-        logToFile(LogLevel.INFO, `日志系统初始化成功，日志将写入: ${LOG_FILE}`);
+        // Ensure that the log directory exists and is writable
+        fs.writeFileSync(LOG_FILE, `[${new Date().toISOString()}] [INFO] ========== MCP server start ==========\n`, { flag: 'a' });
+        logToFile(LogLevel.INFO, `Log system initialization successful, logs will be written to: ${LOG_FILE}`);
     } catch (error) {
-        console.error(`无法写入日志文件: ${error}`);
-        console.error('将继续运行但不记录日志到文件');
+        console.error(`Unable to write log file: ${error}`);
+        console.error('Will continue to run without logging to a file');
     }
     
     // Create a transport layer using standard input/output
