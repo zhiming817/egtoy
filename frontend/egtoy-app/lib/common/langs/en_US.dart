@@ -39,4 +39,23 @@ const Map<String, String> en_US = {
 
   // Menu
   'about': 'About',
+  'my_profile': 'My Profile',
+  'wallet_and_assets': 'Wallet & Assets',
+  'my_wallet': 'My Wallet',
+  'my_nfts': 'My NFTs',
+  'transaction_history': 'Transaction History',
+  'settings': 'Settings',
+  'account_settings': 'Account Settings',
+  'security': 'Security',
+  'language': 'Language',
+  'notifications': 'Notifications',
+  'support': 'Support',
+  'help_center': 'Help Center',
+  'feedback': 'Feedback',
+
+  'logout': 'Logout',
+  'logout_confirmation': 'Logout Confirmation',
+  'logout_confirmation_message': 'Are you sure you want to logout?',
+
+  'select_language': 'Select Language',
 };

@@ -2,19 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:egtoy/common/services/services.dart';
-import 'page/wallet/controller.dart';
-import 'page/home_page.dart';
+import 'pages/wallet/home/controller.dart';
+import 'pages/wallet/home/view.dart';
 import 'common/langs/app_translations.dart';
+import 'package:egtoy/common/langs/app_translations.dart';
+import 'package:egtoy/common/routers/pages.dart';
+import 'package:egtoy/common/store/store.dart';
+import 'package:egtoy/common/style/style.dart';
+import 'package:egtoy/common/utils/utils.dart';
+import 'package:egtoy/global.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // 初始化服务
-  final blockchainManager = BlockchainManager(devnet: true);
-  Get.put(blockchainManager);
+  //final blockchainManager = BlockchainManager(devnet: true);
+  //Get.put(blockchainManager);
 
   // 初始化控制器
-  Get.put(WalletController(blockchainManager: blockchainManager));
-
+  //Get.put(WalletController(blockchainManager: blockchainManager));
+  await Global.init();
   runApp(const MyApp());
 }
 
@@ -23,24 +34,31 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'EGTOY',
-
-      // 添加翻译
-      translations: AppTranslations(),
-
-      // 默认语言为英文
-      locale: const Locale('en', 'US'),
-
-      // 备用语言
-      fallbackLocale: const Locale('en', 'US'),
-
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const HomePage(),
-      defaultTransition: Transition.fade,
-      builder: EasyLoading.init(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return GetMaterialApp(
+          title: 'EGTOY',
+          theme: AppTheme.light,
+          debugShowCheckedModeBanner: false,
+          initialRoute: AppPages.INITIAL,
+          getPages: AppPages.routes,
+          builder: EasyLoading.init(),
+          translations: AppTranslations(),
+          navigatorObservers: [AppPages.observer],
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          locale: ConfigStore.to.locale,
+          fallbackLocale: Locale('en', 'US'),
+          enableLog: true,
+          logWriterCallback: Logger.write,
+        );
+      },
     );
   }
 }

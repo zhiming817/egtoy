@@ -37,4 +37,24 @@ const Map<String, String> zh_CN = {
 
   // 菜单相关
   'about': '关于',
+
+  'my_profile': '我的资料',
+  'wallet_and_assets': '钱包及资产',
+  'my_wallet': '我的钱包',
+  'my_nfts': '我的NFT',
+  'transaction_history': '交易历史',
+  'settings': '设置',
+  'account_settings': '账号设置',
+  'security': '安全设置',
+  'language': '语言',
+  'notifications': '通知设置',
+  'support': '支持',
+  'help_center': '帮助中心',
+  'feedback': '意见反馈',
+
+  'logout': '退出登录',
+  'logout_confirmation': '退出确认',
+  'logout_confirmation_message': '确定要退出登录吗？',
+
+  'select_language': '选择语言',
 };

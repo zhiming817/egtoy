@@ -12,3 +12,5 @@ const String STORAGE_INDEX_NEWS_CACHE_KEY = 'cache_index_news';
 
 /// 多语言
 const String STORAGE_LANGUAGE_CODE = 'language_code';
+
+const String STORAGE_INDEX_AGENT_CACHE_KEY = 'cache_agent';
