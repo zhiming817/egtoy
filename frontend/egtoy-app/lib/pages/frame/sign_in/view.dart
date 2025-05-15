@@ -51,7 +51,7 @@ class SignInPage extends GetView<SignInController> {
           Container(
             margin: EdgeInsets.only(top: 15.h),
             child: Text(
-              "EGTOY",
+              "app_name".tr, // 使用国际化键代替 "EGTOY"
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.primaryText,
@@ -79,7 +79,7 @@ class SignInPage extends GetView<SignInController> {
           inputTextEdit(
             controller: controller.emailController,
             keyboardType: TextInputType.emailAddress,
-            hintText: "User Name",
+            hintText: "username".tr, // 使用国际化键
             marginTop: 0,
             // autofocus: true,
           ),
@@ -87,7 +87,7 @@ class SignInPage extends GetView<SignInController> {
           inputTextEdit(
             controller: controller.passController,
             keyboardType: TextInputType.visiblePassword,
-            hintText: "Password",
+            hintText: "password".tr, // 使用国际化键
             isPassword: true,
           ),
           // 验证码输入框
@@ -101,7 +101,7 @@ class SignInPage extends GetView<SignInController> {
                   child: inputTextEdit(
                     controller: controller.captchaController,
                     keyboardType: TextInputType.text,
-                    hintText: "Verification Code",
+                    hintText: "verification_code".tr, // 使用国际化键
                     marginTop: 0,
                   ),
                 ),
@@ -152,14 +152,14 @@ class SignInPage extends GetView<SignInController> {
                 btnFlatButtonWidget(
                   onPressed: controller.handleNavSignUp,
                   gbColor: AppColors.thirdElement,
-                  title: "Sign up",
+                  title: "sign_up".tr, // 使用国际化键
                 ),
                 Spacer(),
                 // 登录
                 btnFlatButtonWidget(
                   onPressed: controller.handleSignIn,
                   gbColor: AppColors.primaryElement,
-                  title: "Sign in",
+                  title: "sign_in".tr, // 使用国际化键
                 ),
               ],
             ),
@@ -172,7 +172,7 @@ class SignInPage extends GetView<SignInController> {
             child: TextButton(
               onPressed: controller.handleFogotPassword,
               child: Text(
-                "Fogot password?",
+                "forgot_password".tr, // 使用国际化键，并修正拼写错误
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.secondaryElementText,
@@ -198,7 +198,7 @@ class SignInPage extends GetView<SignInController> {
         children: <Widget>[
           // title
           Text(
-            "Or sign in with social networks",
+            "sign_in_with_social".tr, // 使用国际化键
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppColors.primaryText,
@@ -246,7 +246,7 @@ class SignInPage extends GetView<SignInController> {
         width: 294,
         gbColor: AppColors.secondaryElement,
         fontColor: AppColors.primaryText,
-        title: "Sign up",
+        title: "sign_up".tr, // 使用国际化键
         fontWeight: FontWeight.w500,
         fontSize: 16,
       ),

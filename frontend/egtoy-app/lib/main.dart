@@ -19,13 +19,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // 初始化服务
-  //final blockchainManager = BlockchainManager(devnet: true);
-  //Get.put(blockchainManager);
-
-  // 初始化控制器
-  //Get.put(WalletController(blockchainManager: blockchainManager));
   await Global.init();
+  ConfigStore.to.onInitLocale();
   runApp(const MyApp());
 }
 
@@ -47,14 +42,14 @@ class MyApp extends StatelessWidget {
           getPages: AppPages.routes,
           builder: EasyLoading.init(),
           translations: AppTranslations(),
-          navigatorObservers: [AppPages.observer],
-          localizationsDelegates: [
+          localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
+          supportedLocales: const [Locale('en', 'US'), Locale('zh', 'CN')],
           locale: ConfigStore.to.locale,
-          fallbackLocale: Locale('en', 'US'),
+          fallbackLocale: const Locale('en', 'US'),
           enableLog: true,
           logWriterCallback: Logger.write,
         );

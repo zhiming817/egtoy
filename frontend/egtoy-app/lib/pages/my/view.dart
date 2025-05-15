@@ -91,7 +91,12 @@ class MyPage extends GetView<MyController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '${controller.walletAddress.value.substring(0, 6)}...${controller.walletAddress.value.substring(controller.walletAddress.value.length - 4)}',
+                          // 添加安全检查，避免字符串越界
+                          controller.walletAddress.value.length >= 10
+                              ? '${controller.walletAddress.value.substring(0, 6)}...${controller.walletAddress.value.substring(controller.walletAddress.value.length - 4)}'
+                              : controller
+                                  .walletAddress
+                                  .value, // 如果地址太短，就直接显示完整地址
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: AppColors.secondaryText,

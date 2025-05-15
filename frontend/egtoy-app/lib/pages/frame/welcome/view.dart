@@ -11,7 +11,7 @@ class WelcomePage extends GetView<WelcomeController> {
     return Container(
       margin: EdgeInsets.only(top: (60 + 44.0).h), // 顶部系统栏 44px
       child: Text(
-        "EGTOY",
+        "app_name".tr, // 替换为国际化的应用名称
         textAlign: TextAlign.center,
         style: TextStyle(
           color: AppColors.primaryText,
@@ -31,7 +31,7 @@ class WelcomePage extends GetView<WelcomeController> {
       height: 70.h,
       margin: EdgeInsets.only(top: 14.h),
       child: Text(
-        "EGToy is an innovative pet technology platform that combines AI and Web3 technologies to create smarter, more interactive pet products. Its flagship product, the DePIN+AI Smart Desktop Pet Toy, offers an enhanced companionship experience for children while fostering a community that supports and embraces intelligent toys.",
+        "welcome_description".tr, // 替换为国际化的描述文本
         textAlign: TextAlign.center,
         style: TextStyle(
           color: AppColors.primaryText,
@@ -46,7 +46,11 @@ class WelcomePage extends GetView<WelcomeController> {
 
   /// 特性说明
   /// 宽度 80 + 20 + 195 = 295
-  Widget _buildFeatureItem(String imageName, String intro, double marginTop) {
+  Widget _buildFeatureItem(
+    String imageName,
+    String translationKey,
+    double marginTop,
+  ) {
     return Container(
       width: 295.w,
       height: 80.h,
@@ -65,7 +69,7 @@ class WelcomePage extends GetView<WelcomeController> {
           Container(
             width: 195.w,
             child: Text(
-              intro,
+              translationKey.tr, // 使用翻译键
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: AppColors.primaryText,
@@ -108,7 +112,7 @@ class WelcomePage extends GetView<WelcomeController> {
             RoundedRectangleBorder(borderRadius: Radii.k6pxRadius),
           ),
         ),
-        child: Text("Get started"),
+        child: Text("get_started".tr),
         onPressed: controller.handleNavSignIn,
       ),
     );
@@ -122,21 +126,9 @@ class WelcomePage extends GetView<WelcomeController> {
           children: <Widget>[
             _buildPageHeadTitle(),
             _buildPageHeaderDetail(),
-            _buildFeatureItem(
-              "feature-1",
-              "Intelligence Enhancement Hardware: Advanced sensors (Main configuration ESP32-S3) and processing for pet monitoring",
-              86,
-            ),
-            _buildFeatureItem(
-              "feature-2",
-              "Social features for pet owners to share experiences",
-              40,
-            ),
-            _buildFeatureItem(
-              "feature-3",
-              "Complete Security:Protection of pet and owner data",
-              40,
-            ),
+            _buildFeatureItem("feature-1", "feature_1_text".tr, 86),
+            _buildFeatureItem("feature-2", "feature_2_text".tr, 40),
+            _buildFeatureItem("feature-3", "feature_3_text".tr, 40),
             Spacer(),
             _buildStartButton(context),
           ],

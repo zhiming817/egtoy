@@ -11,6 +11,7 @@ class MyController extends GetxController {
   // 依赖注入
   final WalletService walletService = Get.find<WalletService>();
   final UserStore userStore = Get.find<UserStore>();
+  final ConfigStore configStore = Get.find<ConfigStore>(); // 获取ConfigStore
 
   // 当前钱包地址
   final walletAddress = 'wallet_not_connected'.tr.obs;
@@ -25,7 +26,7 @@ class MyController extends GetxController {
     _updateLanguageDisplay();
 
     // 监听语言变化
-    ever(Get.locale?.obs ?? RxString('en_US').obs, (_) {
+    ever(configStore.locale.obs, (_) {
       _updateLanguageDisplay();
     });
   }
@@ -48,8 +49,7 @@ class MyController extends GetxController {
 
   // 更新语言显示
   void _updateLanguageDisplay() {
-    final locale = Get.locale;
-    if (locale?.languageCode == 'zh') {
+    if (configStore.locale.languageCode == 'zh') {
       currentLanguage.value = '中文';
     } else {
       currentLanguage.value = 'English';
@@ -102,37 +102,48 @@ class MyController extends GetxController {
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'select_language'.tr,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            ListTile(
-              title: const Text('English'),
-              trailing:
-                  Get.locale?.languageCode == 'en'
-                      ? const Icon(Icons.check, color: Colors.blue)
-                      : null,
-              onTap: () {
-                Get.updateLocale(const Locale('en', 'US'));
-                Get.back();
-              },
-            ),
-            ListTile(
-              title: const Text('中文'),
-              trailing:
-                  Get.locale?.languageCode == 'zh'
-                      ? const Icon(Icons.check, color: Colors.blue)
-                      : null,
-              onTap: () {
-                Get.updateLocale(const Locale('zh', 'CN'));
-                Get.back();
-              },
-            ),
-          ],
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'select_language'.tr,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20),
+              ListTile(
+                title: const Text('English'),
+                trailing:
+                    configStore.locale.languageCode == 'en'
+                        ? const Icon(Icons.check, color: Colors.blue)
+                        : null,
+                onTap: () {
+                  print('切换到英文');
+                  // 使用ConfigStore设置语言
+                  configStore.onLocaleUpdate(const Locale('en', 'US'));
+                  _updateLanguageDisplay();
+                  Get.back();
+                },
+              ),
+              ListTile(
+                title: const Text('中文'),
+                trailing:
+                    configStore.locale.languageCode == 'zh'
+                        ? const Icon(Icons.check, color: Colors.blue)
+                        : null,
+                onTap: () {
+                  print('切换到中文');
+                  // 使用ConfigStore设置语言
+                  configStore.onLocaleUpdate(const Locale('zh', 'CN'));
+                  _updateLanguageDisplay();
+                  Get.back();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

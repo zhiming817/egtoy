@@ -58,4 +58,20 @@ const Map<String, String> en_US = {
   'logout_confirmation_message': 'Are you sure you want to logout?',
 
   'select_language': 'Select Language',
+  'get_started': 'Get started',
+  'welcome_description':
+      'EGToy is an innovative pet technology platform that combines AI and Web3 technologies to create smarter, more interactive pet products.',
+  'feature_1_text':
+      'Intelligence Enhancement Hardware: Advanced sensors (Main configuration ESP32-S3) and processing for pet monitoring',
+  'feature_2_text': 'Social features for pet owners to share experiences',
+  'feature_3_text': 'Complete Security: Protection of pet and owner data',
+
+  // 登录页面
+  'username': 'Username',
+  'password': 'Password',
+  'verification_code': 'Verification Code',
+  'sign_in': 'Sign in',
+  'sign_up': 'Sign up',
+  'forgot_password': 'Forgot password?',
+  'sign_in_with_social': 'Or sign in with social networks',
 };

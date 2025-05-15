@@ -57,4 +57,18 @@ const Map<String, String> zh_CN = {
   'logout_confirmation_message': '确定要退出登录吗？',
 
   'select_language': '选择语言',
+  'get_started': '开始使用',
+  'welcome_description': 'EGToy是一个创新的宠物科技平台，结合了AI和Web3技术，创造更智能、更具互动性的宠物产品。',
+  'feature_1_text': '智能增强硬件：先进的传感器（主配置ESP32-S3）和处理技术用于宠物监控',
+  'feature_2_text': '为宠物主人提供分享经验的社交功能',
+  'feature_3_text': '完全的安全性：保护宠物和主人的数据',
+
+  // 登录页面
+  'username': '用户名',
+  'password': '密码',
+  'verification_code': '验证码',
+  'sign_in': '登录',
+  'sign_up': '注册',
+  'forgot_password': '忘记密码？',
+  'sign_in_with_social': '或使用社交账号登录',
 };
