@@ -57,6 +57,14 @@ Check out our demonstration video:
 
 [![EGToy Demo Video](https://img.youtube.com/vi/eEPBRKphNhA/0.jpg)](https://www.youtube.com/watch?v=eEPBRKphNhA)
 
+## Connect With Us
+
+Join our community and stay updated with the latest news:
+
+* **Website**: [https://egtoy.xyz/](https://egtoy.xyz/)
+* **X (Twitter)**: [https://x.com/egtoy2025](https://x.com/egtoy2025)
+* **Discord**: [https://discord.gg/UNa2TYj4](https://discord.gg/UNa2TYj4)
+* **Email**: [egtoy@outlook.com](mailto:egtoy@outlook.com)
 ---
 
  EGToy system represents a new generation of pet products that integrate cutting-edge AI technology with Web3 decentralized networks, creating a comprehensive ecosystem for pet care, entertainment, and community building.
