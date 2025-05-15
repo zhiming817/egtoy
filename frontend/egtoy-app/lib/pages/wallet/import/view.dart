@@ -16,8 +16,19 @@ class _ImportWalletPageState extends State<ImportWalletPage> {
   final _errorMessage = ''.obs;
   final _obscureText = true.obs;
 
-  // 获取全局变量
-  final blockchainManager = Get.find<BlockchainManager>();
+  // 直接获取钱包服务
+  late final WalletService _walletService;
+
+  @override
+  void initState() {
+    super.initState();
+    // 获取或初始化 WalletService
+    try {
+      _walletService = Get.find<WalletService>();
+    } catch (_) {
+      _walletService = Get.put(WalletService());
+    }
+  }
 
   @override
   void dispose() {
@@ -36,9 +47,10 @@ class _ImportWalletPageState extends State<ImportWalletPage> {
     _errorMessage.value = '';
 
     try {
-      // 尝试从私钥字符串导入钱包
-      final wallet = await blockchainManager.walletService
-          .importWalletFromPrivateKeyString(privateKeyText);
+      // 直接调用 WalletService 导入钱包
+      final wallet = await _walletService.importWalletFromPrivateKeyString(
+        privateKeyText,
+      );
 
       Get.back(result: wallet);
     } catch (e) {

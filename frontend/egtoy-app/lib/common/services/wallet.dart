@@ -3,17 +3,61 @@ import 'package:solana/solana.dart';
 import 'package:bs58/bs58.dart' as bs58;
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:get/get.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class WalletService {
-  Future<Wallet> createWallet() async {
+class WalletService extends GetxService {
+  // 当前钱包
+  final Rx<Ed25519HDKeyPair?> _currentWallet = Rx<Ed25519HDKeyPair?>(null);
+  Ed25519HDKeyPair? getCurrentWallet() => _currentWallet.value;
+
+  // 安全存储
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  final String _mnemonicKey = 'wallet_mnemonic';
+
+  WalletService();
+
+  // 设置当前钱包
+  void setCurrentWallet(Ed25519HDKeyPair wallet) {
+    _currentWallet.value = wallet;
+  }
+
+  // 创建新钱包
+  Future<Ed25519HDKeyPair> createWallet() async {
+    // 生成助记词
     final mnemonic = bip39.generateMnemonic();
+
+    // 保存助记词
+    await _storage.write(key: _mnemonicKey, value: mnemonic);
+
+    // 从助记词创建钱包
     final wallet = await Ed25519HDKeyPair.fromMnemonic(mnemonic);
     return wallet;
   }
 
-  Future<Wallet> importWalletFromMnemonic(String mnemonic) async {
+  // 从助记词导入钱包
+  Future<Ed25519HDKeyPair> importWalletFromMnemonic(String mnemonic) async {
+    if (!bip39.validateMnemonic(mnemonic)) {
+      throw Exception('无效的助记词');
+    }
+
+    // 保存助记词
+    await _storage.write(key: _mnemonicKey, value: mnemonic);
+
+    // 从助记词创建钱包
     final wallet = await Ed25519HDKeyPair.fromMnemonic(mnemonic);
     return wallet;
+  }
+
+  // 获取钱包助记词
+  Future<String?> getMnemonic() async {
+    return await _storage.read(key: _mnemonicKey);
+  }
+
+  // 清除钱包
+  Future<void> clearWallet() async {
+    _currentWallet.value = null;
+    await _storage.delete(key: _mnemonicKey);
   }
 
   Future<Wallet> importWalletFromPrivateKey(List<int> privateKey) async {

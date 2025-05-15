@@ -87,6 +87,21 @@ class HttpUtil {
           Loading.dismiss();
           ErrorEntity eInfo = createErrorEntity(e);
           onError(eInfo);
+          // 添加日志打印，便于调试
+          print('HTTP请求错误: ${eInfo.code} - ${eInfo.message}');
+          // 根据错误类型自定义处理
+          if (eInfo.code == 401) {
+            // 登录过期，清除凭证并跳转到登录页
+            UserStore.to.onLogout();
+            Get.offAllNamed('/login');
+            EasyLoading.showError('登录已过期，请重新登录');
+          } else if (eInfo.code >= 500) {
+            // 服务器错误
+            EasyLoading.showError('服务器异常，请稍后再试');
+          } else {
+            // 其他错误
+            EasyLoading.showError(eInfo.message);
+          }
           return handler.next(e); //continue
           // 如果你想完成请求并返回一些自定义数据，可以resolve 一个`Response`,如`handler.resolve(response)`。
           // 这样请求将会被终止，上层then会被调用，then中返回的数据将是你的自定义response.
@@ -193,10 +208,11 @@ class HttpUtil {
   /// 读取本地配置
   Map<String, dynamic>? getAuthorizationHeader() {
     var headers = <String, dynamic>{};
-    if (Get.isRegistered<UserStore>() && UserStore.to.hasToken == true) {
+    if (UserStore.to.token != "") {
+      print("token not null");
       headers['Authorization'] = 'Bearer ${UserStore.to.token}';
     }
-    //print('Bearer ${UserStore.to.token}');
+    print('Bearer ${UserStore.to.token}');
     return headers;
   }
 
@@ -229,10 +245,12 @@ class HttpUtil {
     });
     requestOptions.headers = requestOptions.headers ?? {};
     Map<String, dynamic>? authorization = getAuthorizationHeader();
+
     if (authorization != null) {
       requestOptions.headers!.addAll(authorization);
     }
-
+    // dio 设置header
+    dio.options.headers.addAll(requestOptions.headers ?? {});
     var response = await dio.get(
       path,
       queryParameters: queryParameters,
@@ -252,10 +270,18 @@ class HttpUtil {
     Options requestOptions = options ?? Options();
     requestOptions.headers = requestOptions.headers ?? {};
     Map<String, dynamic>? authorization = getAuthorizationHeader();
+
     if (authorization != null) {
+      print(
+        authorization.entries
+            .map((e) => "${e.key} : ${e.value}")
+            .toList()
+            .toString(),
+      );
       requestOptions.headers!.addAll(authorization);
     }
-    print(path);
+    print(SERVER_API_URL + path);
+    dio.options.headers.addAll(requestOptions.headers ?? {});
     var response = await dio.post(
       path,
       data: data,
@@ -279,6 +305,7 @@ class HttpUtil {
     if (authorization != null) {
       requestOptions.headers!.addAll(authorization);
     }
+    dio.options.headers.addAll(requestOptions.headers ?? {});
     var response = await dio.put(
       path,
       data: data,
@@ -302,6 +329,7 @@ class HttpUtil {
     if (authorization != null) {
       requestOptions.headers!.addAll(authorization);
     }
+    dio.options.headers.addAll(requestOptions.headers ?? {});
     var response = await dio.patch(
       path,
       data: data,
@@ -325,6 +353,7 @@ class HttpUtil {
     if (authorization != null) {
       requestOptions.headers!.addAll(authorization);
     }
+    dio.options.headers.addAll(requestOptions.headers ?? {});
     var response = await dio.delete(
       path,
       data: data,
@@ -348,6 +377,7 @@ class HttpUtil {
     if (authorization != null) {
       requestOptions.headers!.addAll(authorization);
     }
+    dio.options.headers.addAll(requestOptions.headers ?? {});
     var response = await dio.post(
       path,
       data: FormData.fromMap(data),
@@ -375,6 +405,7 @@ class HttpUtil {
     requestOptions.headers!.addAll({
       Headers.contentLengthHeader: dataLength.toString(),
     });
+    dio.options.headers.addAll(requestOptions.headers ?? {});
     var response = await dio.post(
       path,
       data: Stream.fromIterable(data.map((e) => [e])),

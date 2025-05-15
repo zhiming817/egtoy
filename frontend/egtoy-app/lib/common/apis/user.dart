@@ -7,7 +7,11 @@ class UserAPI {
   static Future<UserLoginResponseEntity> login({
     UserLoginRequestEntity? params,
   }) async {
-    var response = await HttpUtil().post('/user/login', data: params?.toJson());
+    var response = await HttpUtil().post(
+      '/user/login/v2',
+      data: params?.toJson(),
+    );
+    print(response);
     return UserLoginResponseEntity.fromJson(response);
   }
 

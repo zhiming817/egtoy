@@ -46,7 +46,8 @@ class UserStore extends GetxController {
   }
 
   // 保存 profile
-  Future<void> saveProfile(UserLoginResponseEntity profile) async {
+  Future<void> saveProfile(UserLoginResponseDataEntity profile) async {
+    setToken(profile.token ?? '');
     _isLogin.value = true;
     StorageService.to.setString(STORAGE_USER_PROFILE_KEY, jsonEncode(profile));
   }
@@ -55,6 +56,7 @@ class UserStore extends GetxController {
   Future<void> onLogout() async {
     if (_isLogin.value) await UserAPI.logout();
     await StorageService.to.remove(STORAGE_USER_TOKEN_KEY);
+    await StorageService.to.remove(STORAGE_USER_PROFILE_KEY);
     _isLogin.value = false;
     token = '';
   }
