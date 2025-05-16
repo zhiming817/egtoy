@@ -73,6 +73,7 @@ class WalletService extends GetxService {
     try {
       // 首先清理输入，移除任何空白字符
       privateKeyString = privateKeyString.trim();
+      Ed25519HDKeyPair wallet;
 
       // 尝试作为Base58格式的私钥处理
       try {
@@ -83,7 +84,11 @@ class WalletService extends GetxService {
         if (secretKey.length >= 32) {
           // 获取私钥部分（通常前32字节是私钥）
           final privateKey = secretKey.sublist(0, 32);
-          return Ed25519HDKeyPair.fromPrivateKeyBytes(privateKey: privateKey);
+          wallet = await Ed25519HDKeyPair.fromPrivateKeyBytes(
+            privateKey: privateKey,
+          );
+          setCurrentWallet(wallet); // 设置当前钱包
+          return wallet;
         } else {
           throw FormatException('解码后的私钥长度不足');
         }
@@ -113,7 +118,11 @@ class WalletService extends GetxService {
         (i) => int.parse(hexString.substring(i * 2, i * 2 + 2), radix: 16),
       );
 
-      return Ed25519HDKeyPair.fromPrivateKeyBytes(privateKey: privateKeyBytes);
+      wallet = await Ed25519HDKeyPair.fromPrivateKeyBytes(
+        privateKey: privateKeyBytes,
+      );
+      setCurrentWallet(wallet); // 设置当前钱包
+      return wallet;
     } catch (e) {
       // 更详细的错误信息
       print("导入钱包失败: $e");

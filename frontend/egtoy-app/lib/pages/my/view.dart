@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:egtoy/common/values/values.dart';
-import 'package:egtoy/common/widgets/widgets.dart';
 import 'package:egtoy/common/store/store.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'controller.dart';
 
 class MyPage extends GetView<MyController> {
-  const MyPage({Key? key}) : super(key: key);
-
   // 头部用户信息
   Widget _buildUserHeader() {
     return GetX<UserStore>(
@@ -27,11 +24,9 @@ class MyPage extends GetView<MyController> {
               ),
             ],
           ),
-          // 添加居中布局
           child: Center(
             child: Column(
               children: [
-                // 头像
                 GestureDetector(
                   onTap: controller.onTapAvatar,
                   child: Container(
@@ -67,46 +62,59 @@ class MyPage extends GetView<MyController> {
                             ),
                   ),
                 ),
-                // 用户名
                 SizedBox(height: 10.h),
                 Text(
-                  userStore.profile.msg ?? 'user_name'.tr,
+                  userStore.profile.msg ?? 'User Name', // 直接使用英文
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryText,
                   ),
                 ),
-                // 钱包地址
                 SizedBox(height: 5.h),
-                if (controller.walletAddress.value.isNotEmpty &&
-                    controller.walletAddress.value != 'wallet_not_connected'.tr)
-                  GestureDetector(
-                    onTap:
-                        () => controller.copyToClipboard(
-                          controller.walletAddress.value,
-                        ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          // 添加安全检查，避免字符串越界
-                          controller.walletAddress.value.length >= 10
-                              ? '${controller.walletAddress.value.substring(0, 6)}...${controller.walletAddress.value.substring(controller.walletAddress.value.length - 4)}'
-                              : controller
-                                  .walletAddress
-                                  .value, // 如果地址太短，就直接显示完整地址
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: AppColors.secondaryText,
+                // Obx 用于监听 controller.walletAddress 的变化
+                Obx(() {
+                  final String walletAddr = controller.walletAddress.value;
+                  // 检查钱包地址是否是 "未连接钱包" 的翻译（即使我们现在不用 .tr，controller 可能仍然设置这个值）
+                  // 或者直接检查是否为空或特定占位符
+                  final String notConnectedPlaceholder =
+                      'wallet_not_connected'.tr; // 获取 "未连接钱包" 的当前翻译以进行比较
+                  // 或者使用一个固定的英文占位符，如果 controller 也改了的话
+                  if (walletAddr.isNotEmpty &&
+                      walletAddr != notConnectedPlaceholder &&
+                      walletAddr != "Wallet not connected") {
+                    // 增加一个直接的英文检查
+                    return GestureDetector(
+                      onTap: () => controller.copyToClipboard(walletAddr),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            walletAddr.length >= 10
+                                ? '${walletAddr.substring(0, 6)}...${walletAddr.substring(walletAddr.length - 4)}'
+                                : walletAddr,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: AppColors.secondaryText,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 5.w),
-                        const Icon(Icons.copy, size: 14),
-                      ],
-                    ),
-                  ),
+                          SizedBox(width: 5.w),
+                          const Icon(Icons.copy, size: 14),
+                        ],
+                      ),
+                    );
+                  } else {
+                    // 可以选择显示 "Wallet not connected" 或不显示任何内容
+                    return Text(
+                      "Wallet not connected", // 直接显示英文
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: AppColors.secondaryText,
+                      ),
+                    );
+                  }
+                }),
               ],
             ),
           ),
@@ -118,14 +126,14 @@ class MyPage extends GetView<MyController> {
   // 菜单项构建
   Widget _buildMenuItem({
     required IconData leadingIcon,
-    required String title,
+    required String title, // title 现在是直接的英文字符串
     VoidCallback? onTap,
     Widget? trailing,
   }) {
     return ListTile(
       leading: Icon(leadingIcon, color: AppColors.primaryText, size: 24.sp),
       title: Text(
-        title,
+        title, // 直接使用传入的 title
         style: TextStyle(fontSize: 16.sp, color: AppColors.primaryText),
       ),
       trailing:
@@ -147,7 +155,7 @@ class MyPage extends GetView<MyController> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           child: Text(
-            'wallet_and_assets'.tr,
+            'Wallet & Assets', // 直接使用英文
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.bold,
@@ -157,17 +165,17 @@ class MyPage extends GetView<MyController> {
         ),
         _buildMenuItem(
           leadingIcon: Icons.account_balance_wallet,
-          title: 'my_wallet'.tr,
+          title: 'My Wallet', // 直接使用英文
           onTap: controller.onTapWallet,
         ),
         _buildMenuItem(
           leadingIcon: Icons.token,
-          title: 'my_nfts'.tr,
+          title: 'My NFTs', // 直接使用英文
           onTap: controller.onTapNFTs,
         ),
         _buildMenuItem(
           leadingIcon: Icons.history,
-          title: 'transaction_history'.tr,
+          title: 'Transaction History', // 直接使用英文
           onTap: controller.onTapTransactionHistory,
         ),
       ],
@@ -182,7 +190,7 @@ class MyPage extends GetView<MyController> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           child: Text(
-            'settings'.tr,
+            'Settings', // 直接使用英文
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.bold,
@@ -192,20 +200,25 @@ class MyPage extends GetView<MyController> {
         ),
         _buildMenuItem(
           leadingIcon: Icons.person_outline,
-          title: 'account_settings'.tr,
+          title: 'Account Settings', // 直接使用英文
           onTap: controller.onTapAccountSettings,
         ),
         _buildMenuItem(
           leadingIcon: Icons.security,
-          title: 'security'.tr,
+          title: 'Security', // 直接使用英文
           onTap: controller.onTapSecurity,
         ),
+        // 语言切换部分，trailing 的文本也直接用英文
         Obx(
+          // Obx 仍然需要，因为 controller.currentLanguage.value 是响应式的
           () => _buildMenuItem(
             leadingIcon: Icons.language,
-            title: 'language'.tr,
+            title: 'Language', // 直接使用英文
             trailing: Text(
-              controller.currentLanguage.value,
+              // controller.currentLanguage.value 仍然会是 "English" 或 "中文"
+              // 如果希望这里也固定为英文，需要修改 controller 的 _updateLanguageDisplay
+              // 或者直接显示一个固定的英文文本，例如 "English"
+              controller.currentLanguage.value, // 或者直接写 "English"
               style: TextStyle(fontSize: 14.sp, color: AppColors.secondaryText),
             ),
             onTap: controller.onTapLanguage,
@@ -213,7 +226,7 @@ class MyPage extends GetView<MyController> {
         ),
         _buildMenuItem(
           leadingIcon: Icons.notifications_none,
-          title: 'notifications'.tr,
+          title: 'Notifications', // 直接使用英文
           onTap: controller.onTapNotifications,
         ),
       ],
@@ -228,7 +241,7 @@ class MyPage extends GetView<MyController> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
           child: Text(
-            'support'.tr,
+            'Support', // 直接使用英文
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.bold,
@@ -238,17 +251,17 @@ class MyPage extends GetView<MyController> {
         ),
         _buildMenuItem(
           leadingIcon: Icons.help_outline,
-          title: 'help_center'.tr,
+          title: 'Help Center', // 直接使用英文
           onTap: controller.onTapHelpCenter,
         ),
         _buildMenuItem(
           leadingIcon: Icons.feedback_outlined,
-          title: 'feedback'.tr,
+          title: 'Feedback', // 直接使用英文
           onTap: controller.onTapFeedback,
         ),
         _buildMenuItem(
           leadingIcon: Icons.info_outline,
-          title: 'about'.tr,
+          title: 'About', // 直接使用英文
           onTap: controller.onTapAbout,
         ),
       ],
@@ -269,42 +282,45 @@ class MyPage extends GetView<MyController> {
             borderRadius: BorderRadius.circular(8.r),
           ),
         ),
-        child: Text('logout'.tr, style: TextStyle(fontSize: 16.sp)),
+        child: Text('Logout', style: TextStyle(fontSize: 16.sp)), // 直接使用英文
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    // 不再需要 GetBuilder<ConfigStore> 来监听语言变化，因为文本是硬编码的
+    // 但如果 controller 内部有依赖 ConfigStore 的逻辑，或者其他原因需要重建，可以保留
+    // 为了完全移除国际化影响，可以暂时去掉 GetBuilder<ConfigStore>
+    // return GetBuilder<ConfigStore>(
+    //   builder: (_) {
+    // print("'my_profile' 翻译为: ${'my_profile'.tr}"); // 这行会报错，因为我们不再期望 .tr 工作
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('my_profile'.tr),
+        title: const Text('My Profile'), // 直接使用英文
         backgroundColor: AppColors.primaryBackground,
         elevation: 0,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: controller.onTapSettings,
+            onPressed: controller.onTapSettings, // onTapSettings 可能仍然会触发语言相关的逻辑
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildUserHeader(),
-            SizedBox(height: 10.h),
             _buildWalletSection(),
-            const Divider(),
             _buildSettingsSection(),
-            const Divider(),
             _buildSupportSection(),
             _buildLogoutButton(),
-            // 底部安全区域
-            SizedBox(height: MediaQuery.of(context).padding.bottom),
           ],
         ),
       ),
     );
+    //   },
+    // );
   }
 }

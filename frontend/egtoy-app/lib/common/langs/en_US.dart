@@ -74,4 +74,12 @@ const Map<String, String> en_US = {
   'sign_up': 'Sign up',
   'forgot_password': 'Forgot password?',
   'sign_in_with_social': 'Or sign in with social networks',
+
+  //agent
+  'agent': 'AI Agent',
+
+  'tab_agent': 'Agent',
+  'tab_wallet': 'Wallet',
+  'tab_nft': 'NFT',
+  'tab_my': 'My',
 };

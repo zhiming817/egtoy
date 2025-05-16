@@ -11,7 +11,7 @@ class WalletController extends GetxController {
   late final WalletService walletService;
 
   // 使用 Rx 变量来实现响应式状态
-  final walletAddress = RxString('未连接钱包'); // 先使用固定文本
+  final walletAddress = RxString('No Wallet Connected'); // 先使用固定文本
   final balance = 0.0.obs;
   final egtBalance = 0.0.obs;
   final isLoading = false.obs;
@@ -47,7 +47,7 @@ class WalletController extends GetxController {
 
     // 更新初始文本以匹配当前语言
     if (_currentWallet.value == null) {
-      walletAddress.value = 'wallet_not_connected'.tr;
+      walletAddress.value = 'No Wallet Connected'.tr;
     }
 
     // 添加翻译更新回调
@@ -55,13 +55,13 @@ class WalletController extends GetxController {
       'en_US': {'wallet_not_connected': 'No Wallet Connected'},
     });
     Get.addTranslations({
-      'zh_CN': {'wallet_not_connected': '未连接钱包'},
+      'zh_CN': {'wallet_not_connected': 'No Wallet Connected'},
     });
   }
 
   // 处理语言变化的方法，可以在需要时调用
   void updateTranslations() {
-    if (walletAddress.value == '未连接钱包' ||
+    if (walletAddress.value == 'No Wallet Connected' ||
         walletAddress.value == 'No Wallet Connected') {
       walletAddress.value = 'wallet_not_connected'.tr;
     }
@@ -92,7 +92,7 @@ class WalletController extends GetxController {
         balance.value = balanceValue;
         egtBalance.value = egtBalanceValue;
       } else {
-        walletAddress.value = 'wallet_not_connected'.tr;
+        walletAddress.value = 'No Wallet Connected'.tr;
       }
     } catch (e) {
       Get.snackbar(

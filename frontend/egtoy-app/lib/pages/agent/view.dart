@@ -10,7 +10,7 @@ class AgentPage extends GetView<AgentController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agent'),
+        title: Text('Agent'.tr), //国际化
         backgroundColor: AppColors.primaryBackground,
         elevation: 0,
       ),

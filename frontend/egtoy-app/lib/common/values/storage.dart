@@ -14,3 +14,5 @@ const String STORAGE_INDEX_NEWS_CACHE_KEY = 'cache_index_news';
 const String STORAGE_LANGUAGE_CODE = 'language_code';
 
 const String STORAGE_INDEX_AGENT_CACHE_KEY = 'cache_agent';
+
+const String STORAGE_USER_WALLET_ADDRESS_KEY = 'user_wallet_address';

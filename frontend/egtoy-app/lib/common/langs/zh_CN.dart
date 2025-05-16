@@ -71,4 +71,11 @@ const Map<String, String> zh_CN = {
   'sign_up': '注册',
   'forgot_password': '忘记密码？',
   'sign_in_with_social': '或使用社交账号登录',
+
+  //agent
+  'agent': 'AI代理',
+  'tab_agent': '智能体',
+  'tab_wallet': '钱包',
+  'tab_nft': 'NFT',
+  'tab_my': '我的',
 };

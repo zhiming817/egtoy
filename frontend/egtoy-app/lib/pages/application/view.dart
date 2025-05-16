@@ -1,3 +1,4 @@
+import 'package:egtoy/common/store/store.dart';
 import 'package:egtoy/pages/my/view.dart';
 import 'package:flutter/material.dart';
 import 'package:egtoy/common/values/values.dart';
@@ -37,16 +38,19 @@ class ApplicationPage extends GetView<ApplicationController> {
 
   // 内容页
   Widget _buildPageView() {
-    return PageView(
-      physics: NeverScrollableScrollPhysics(),
-      children: <Widget>[
-        AgentPage(),
-        WalletHomePage(),
-        Text('BookmarksPage'),
-        MyPage(),
-      ],
-      controller: controller.pageController,
-      onPageChanged: controller.handlePageChanged,
+    return GetBuilder<ConfigStore>(
+      builder:
+          (_) => PageView(
+            physics: NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              AgentPage(),
+              WalletHomePage(),
+              Text('BookmarksPage'),
+              MyPage(),
+            ],
+            controller: controller.pageController,
+            onPageChanged: controller.handlePageChanged,
+          ),
     );
   }
 

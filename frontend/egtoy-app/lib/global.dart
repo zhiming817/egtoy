@@ -19,6 +19,10 @@ class Global {
 
     Get.put<ConfigStore>(ConfigStore());
     Get.put<UserStore>(UserStore());
+    // 添加这行来注册 WalletService
+    Get.put<WalletService>(WalletService());
+    Get.put<SolanaService>(SolanaService(devnet: true));
+    Get.put<StorageService>(StorageService());
   }
 
   static void setSystemUi() {

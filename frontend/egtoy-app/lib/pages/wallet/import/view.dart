@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solana/solana.dart';
 import 'package:egtoy/common/services/services.dart';
+import 'package:egtoy/common/values/values.dart';
 
 class ImportWalletPage extends StatefulWidget {
   const ImportWalletPage({super.key});
@@ -39,7 +40,7 @@ class _ImportWalletPageState extends State<ImportWalletPage> {
   Future<void> _importWallet() async {
     final privateKeyText = _privateKeyController.text.trim();
     if (privateKeyText.isEmpty) {
-      _errorMessage.value = 'private_key_required'.tr;
+      _errorMessage.value = "Private key is required";
       return;
     }
 
@@ -51,10 +52,14 @@ class _ImportWalletPageState extends State<ImportWalletPage> {
       final wallet = await _walletService.importWalletFromPrivateKeyString(
         privateKeyText,
       );
-
+      print("Wallet imported: ${wallet.address}");
+      await StorageService.to.setString(
+        STORAGE_USER_WALLET_ADDRESS_KEY,
+        wallet.address,
+      );
       Get.back(result: wallet);
     } catch (e) {
-      _errorMessage.value = 'import_wallet_error'.tr + ': ${e.toString()}';
+      _errorMessage.value = 'Failed to import wallet'.tr + ': ${e.toString()}';
       _isLoading.value = false;
     }
   }
@@ -63,7 +68,7 @@ class _ImportWalletPageState extends State<ImportWalletPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('import_private_key'.tr),
+        title: Text('Import Private Key'.tr),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Padding(
@@ -76,7 +81,7 @@ class _ImportWalletPageState extends State<ImportWalletPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        'enter_private_key'.tr,
+                        'Enter your private key:'.tr,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -84,7 +89,8 @@ class _ImportWalletPageState extends State<ImportWalletPage> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'private_key_warning'.tr,
+                        'Warning: Private keys represent full access. Make sure you are in a secure environment.'
+                            .tr,
                         style: const TextStyle(color: Colors.red),
                       ),
                       const SizedBox(height: 16),
@@ -93,7 +99,7 @@ class _ImportWalletPageState extends State<ImportWalletPage> {
                           controller: _privateKeyController,
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
-                            hintText: 'enter_private_key'.tr,
+                            hintText: 'Enter your private key:'.tr,
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _obscureText.value
@@ -124,14 +130,14 @@ class _ImportWalletPageState extends State<ImportWalletPage> {
                       const SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: _importWallet,
-                        child: Text('import'.tr),
+                        child: Text('Import'.tr),
                       ),
                       const SizedBox(height: 8),
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text('cancel'.tr),
+                        child: Text('Cancel'.tr),
                       ),
                     ],
                   ),

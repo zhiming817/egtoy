@@ -1,4 +1,4 @@
-library category;
+library agent;
 
 export 'state.dart';
 export 'controller.dart';

@@ -43,5 +43,11 @@ class ConfigStore extends GetxController {
     locale = value;
     Get.updateLocale(value);
     StorageService.to.setString(STORAGE_LANGUAGE_CODE, value.languageCode);
+    update(); // 关键：通知所有 GetBuilder
+
+    // 强制刷新页面 (可选，但在某些情况下很有用)
+    Future.delayed(Duration(milliseconds: 100), () {
+      Get.forceAppUpdate();
+    });
   }
 }

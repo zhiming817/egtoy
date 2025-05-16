@@ -17,12 +17,6 @@ class AgentController extends GetxController {
   /// 响应式成员变量
   final state = AgentState();
 
-  /// 成员变量
-  String categoryCode = '';
-  int curPage = 1;
-  int pageSize = 20;
-  int total = 20;
-
   /// 事件
 
   void onRefresh() {
@@ -36,17 +30,13 @@ class AgentController extends GetxController {
   }
 
   void onLoading() {
-    if (state.agentList.length < total) {
-      fetchAgentList()
-          .then((_) {
-            refreshController.loadComplete();
-          })
-          .catchError((_) {
-            refreshController.loadFailed();
-          });
-    } else {
-      refreshController.loadNoData();
-    }
+    fetchAgentList()
+        .then((_) {
+          refreshController.loadComplete();
+        })
+        .catchError((_) {
+          refreshController.loadFailed();
+        });
   }
 
   // 方法
@@ -56,26 +46,12 @@ class AgentController extends GetxController {
     var agents = await AgentAPI.agentPageList();
     print(agents);
 
-    // var result = await NewsAPI.newsPageList(
-    //   params: NewsPageListRequestEntity(
-    //     categoryCode: categoryCode,
-    //     pageNum: curPage + 1,
-    //     pageSize: pageSize,
-    //   ),
-    // );
-
     if (isRefresh == true) {
-      //curPage = 1;
-      //total = result.counts!;
       state.agentList.clear();
-    } else {
-      curPage++;
     }
 
     state.agentList.addAll(agents.data!);
   }
-
-  /// 生命周期
 
   ///dispose 释放内存
   @override
