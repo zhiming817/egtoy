@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EGToy Whitepaper</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+            color: #343a40;
+        }
+        h1 {
+            font-size: 2.2em;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 0.3em;
+        }
+        h2 {
+            font-size: 1.8em;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 0.2em;
+        }
+        h3 {
+            font-size: 1.4em;
+        }
+        p {
+            margin-bottom: 1em;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul, ol {
+            margin-bottom: 1em;
+            padding-left: 1.5em;
+        }
+        li {
+            margin-bottom: 0.3em;
+        }
+        strong {
+            font-weight: 600;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #dee2e6;
+            margin: 2em 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5em;
+            font-size: 0.9em;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 0.75em;
+            text-align: left;
+        }
+        th {
+            background-color: #e9ecef;
+            font-weight: 600;
+        }
+        .meta-info {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-bottom: 1em;
+        }
+        .meta-info p {
+            margin-bottom: 0.2em;
+        }
+        .conclusion-highlight {
+            font-style: italic;
+            font-weight: bold;
+            margin-top: 1.5em;
+            text-align: center;
+            color: #495057;
+        }
+        .contact-info {
+            margin-top: 2em;
+            padding-top: 1em;
+            border-top: 1px solid #e9ecef;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EGToy Whitepaper</h1>
+
+        <div class="meta-info">
+            <p><strong>Version:</strong> 1.0</p>
+            <p><strong>Date:</strong> May 2025</p>
+            <p><strong>Website:</strong> <a href="https://egtoy.xyz">https://egtoy.xyz</a></p>
+        </div>
+
+        <hr>
+
+        <h2>Table of Contents</h2>
+        <ol>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#market-background">Market Background</a></li>
+            <li><a href="#vision-mission">Vision & Mission</a></li>
+            <li><a href="#product-overview">Product Overview</a></li>
+            <li><a href="#architecture-technology">Architecture & Technology</a></li>
+            <li><a href="#tokenomics">Tokenomics</a></li>
+            <li><a href="#community-governance">Community & Governance</a></li>
+            <li><a href="#roadmap">Roadmap</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#risk-factors">Risk Factors</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+        </ol>
+
+        <hr>
+
+        <h2 id="introduction">1. Introduction</h2>
+        <p><strong>EGToy</strong> is a next-gen pet tech platform built at the intersection of AI, smart toys, and Web3. It blends intelligent physical devices, a decentralized infrastructure (DePIN), and gamified crypto rewards to deliver a fully interactive experience for pet owners and children.</p>
+        <p>More than a toy, EGToy is an ecosystem that connects humans, pets, devices, and data through blockchain and intelligent systems—creating meaningful, emotionally-aware engagement powered by real-world behavior.</p>
+
+        <hr>
+
+        <h2 id="market-background">2. Market Background</h2>
+        <h3>2.1 Pet Economy Growth</h3>
+        <ul>
+            <li>Global pet industry: $300B+ in 2024, expected to reach $500B by 2030.</li>
+            <li>Rising demand for smart, engaging, AI-powered pet solutions.</li>
+        </ul>
+        <h3>2.2 Convergence with Web3</h3>
+        <ul>
+            <li>Traditional pet tech lacks user ownership or interoperable data.</li>
+            <li>EGToy leverages blockchain and DePIN to decentralize pet-device infrastructure and incentivize contribution through tokens.</li>
+        </ul>
+
+        <hr>
+
+        <h2 id="vision-mission">3. Vision & Mission</h2>
+        <ul>
+            <li><strong>Vision:</strong> To reinvent the pet-human relationship with emotionally intelligent, decentralized technology.</li>
+            <li><strong>Mission:</strong> To deliver AI-powered smart toys and Web3 rewards that connect pets, people, and community—while giving value back to users.</li>
+        </ul>
+
+        <hr>
+
+        <h2 id="product-overview">4. Product Overview</h2>
+        <h3>4.1 EGToy Smart Hardware</h3>
+        <ul>
+            <li><strong>Core Chipset:</strong> ESP32-S3</li>
+            <li><strong>Sensors:</strong> Gyroscope, temperature, mic, motion</li>
+            <li><strong>Features:</strong>
+                <ul>
+                    <li>Real-time interaction</li>
+                    <li>Behavior tracking</li>
+                    <li>Sound & motion play modes</li>
+                </ul>
+            </li>
+            <li><strong>Wi-Fi + Bluetooth Mesh</strong> for DePIN integration</li>
+        </ul>
+        <h3>4.2 EGToy Mobile App</h3>
+        <ul>
+            <li>AI health suggestions</li>
+            <li>Pet behavior timeline</li>
+            <li>Gamified interaction stats</li>
+            <li>NFT Pet ID + Device pairing</li>
+        </ul>
+        <h3>4.3 RealMCP Protocol (Meta Companion Protocol)</h3>
+        <ul>
+            <li>Open standard to describe pet-device interactions</li>
+            <li>Enables third-party integrations</li>
+            <li>Real-time sync with blockchain for provable play & data logging</li>
+        </ul>
+
+        <hr>
+
+        <h2 id="architecture-technology">5. Architecture & Technology</h2>
+        <h3>5.1 AI Layer</h3>
+        <ul>
+            <li><strong>Multi-Task Learning (MTL)</strong> for behavior detection</li>
+            <li>Lightweight on-device inference</li>
+            <li>Emotion classification for play & stress indicators</li>
+            <li>Customizable interaction feedback</li>
+        </ul>
+        <h3>5.2 Blockchain Layer</h3>
+        <ul>
+            <li><strong>EVM-Compatible</strong> (Polygon, BNB Chain)</li>
+            <li>DID identity support</li>
+            <li>On-chain event records (device logs, NFT updates)</li>
+        </ul>
+        <h3>5.3 DePIN Infrastructure</h3>
+        <ul>
+            <li>EGToy devices = DePIN nodes</li>
+            <li>Node contribution = Play + Data = Token yield</li>
+            <li>Gamified Proof-of-Engagement model</li>
+        </ul>
+
+        <hr>
+
+        <h2 id="tokenomics">6. Tokenomics</h2>
+        <h3>Token: <code>$EGT</code></h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Utility</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Rewards</td>
+                    <td>Earn tokens for interaction, activity, data use</td>
+                </tr>
+                <tr>
+                    <td>Governance</td>
+                    <td>Vote in EGToy DAO proposals</td>
+                </tr>
+                <tr>
+                    <td>In-app Payments</td>
+                    <td>Buy accessories, NFTs, or services</td>
+                </tr>
+                <tr>
+                    <td>Staking</td>
+                    <td>Yield for long-term holders</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Token Allocation (Illustrative)</h3>
+        <ul>
+            <li>Community Rewards: 40%</li>
+            <li>Team & Advisors: 20% (vested)</li>
+            <li>Strategic Partners: 15%</li>
+            <li>Public Launch & Airdrops: 10%</li>
+            <li>Ecosystem Growth Fund: 15%</li>
+        </ul>
+
+        <hr>
+
+        <h2 id="community-governance">7. Community & Governance</h2>
+        <ul>
+            <li><strong>EGToy DAO:</strong> Token holders vote on ecosystem development</li>
+            <li><strong>Gamified Missions:</strong> Play with toy to earn badges, rankings</li>
+            <li><strong>Meme Economy:</strong> Community content contests and rewards</li>
+            <li><strong>Petfluencer Program:</strong> Boost visibility for pet creators</li>
+        </ul>
+
+        <hr>
+
+        <h2 id="roadmap">8. Roadmap</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Quarter</th>
+                    <th>Milestones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Q2 2025 (May–Jun)</td>
+                    <td>🚀 Project kickoff: hardware engineering, AI model training begins</td>
+                </tr>
+                <tr>
+                    <td>Q3 2025 (Jul–Sep)</td>
+                    <td>🔧 Beta program: app launch, early DePIN device testing, NFT identity trials</td>
+                </tr>
+                <tr>
+                    <td>Q4 2025 (Oct–Dec)</td>
+                    <td>🌐 Mainnet: $EGT token launch, DePIN incentives live, community airdrop</td>
+                </tr>
+                <tr>
+                    <td>Q1 2026 (Jan–Mar)</td>
+                    <td>📦 First mass hardware shipment, RealMCP SDK alpha for developers</td>
+                </tr>
+                <tr>
+                    <td>Q2 2026 (Apr–Jun)</td>
+                    <td>🤝 Global brand partnerships, in-store launch in key pet markets</td>
+                </tr>
+                <tr>
+                    <td>Q3 2026+</td>
+                    <td>🧠 AI personalization V2, ecosystem DAO governance activation</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <h2 id="team">9. Team</h2>
+        <p>EGToy is built by a cross-disciplinary team of AI engineers, blockchain developers, pet behavior specialists, and product designers from top Web3 and hardware companies.<br>
+        <em>(Team bios coming soon or available upon request.)</em></p>
+
+        <hr>
+
+        <h2 id="risk-factors">10. Risk Factors</h2>
+        <ul>
+            <li><strong>Hardware Risk:</strong> Supply chain issues may delay production.</li>
+            <li><strong>AI Accuracy:</strong> Behavior predictions depend on training data and may vary by breed.</li>
+            <li><strong>Regulatory:</strong> Web3 components must comply with local laws and policies.</li>
+            <li><strong>User Adoption:</strong> Crypto onboarding and device pairing UX must be streamlined.</li>
+        </ul>
+
+        <hr>
+
+        <h2 id="conclusion">11. Conclusion</h2>
+        <p>EGToy is more than a pet toy—it's a decentralized, AI-powered companion platform that rewards emotional interaction, data contribution, and community creation. As DePIN expands and token-powered ecosystems mature, EGToy stands at the frontier of playful infrastructure and emotional AI.</p>
+        <p class="conclusion-highlight">Let your pet play. Let your data earn. Let your community grow.</p>
+
+        <hr>
+
+        <div class="contact-info">
+            <p><strong>Website:</strong> <a href="https://egtoy.xyz">https://egtoy.xyz</a></p>
+            <p><strong>Contact:</strong> <a href="mailto:egtoy@outlook.com">egtoy@outlook.com</a></p>
+        </div>
+    </div>
+</body>
+</html>
