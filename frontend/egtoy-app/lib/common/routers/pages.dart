@@ -1,3 +1,6 @@
+import 'package:egtoy/pages/device/bindings.dart';
+import 'package:egtoy/pages/device/index.dart';
+import 'package:egtoy/pages/my/index.dart';
 import 'package:egtoy/pages/wallet/home/index.dart';
 import 'package:egtoy/pages/wallet/import/index.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +12,7 @@ import 'package:egtoy/pages/frame/sign_up/index.dart';
 import 'package:egtoy/pages/frame/welcome/index.dart';
 import 'package:egtoy/pages/wallet/import/index.dart';
 import 'package:egtoy/pages/wallet/home/index.dart';
+import 'package:egtoy/pages/my/index.dart';
 import 'package:get/get.dart';
 
 import 'routes.dart';
@@ -59,5 +63,11 @@ class AppPages {
       page: () => WalletHomePage(),
       binding: WalletBinding(),
     ),
+    GetPage(
+      name: AppRoutes.Device,
+      page: () => DeviceListView(),
+      binding: DeviceBinding(),
+    ),
+    GetPage(name: AppRoutes.MY, page: () => MyPage(), binding: MyBinding()),
   ];
 }

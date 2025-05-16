@@ -1,382 +1,171 @@
-import 'package:egtoy/pages/device/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:egtoy/common/entities/device.dart';
-// import 'package:egtoy/page/device/controller/device_controller.dart';
-// import 'package:egtoy/page/device/model/device.dart';
+import 'package:egtoy/common/entities/entities.dart'; // 确保导入Device实体
+import 'package:intl/intl.dart'; // 如果您使用了DateFormat
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'controller.dart'; // 导入您的DeviceController
 
-class DeviceListView extends StatelessWidget {
-  final DeviceController controller;
-  const DeviceListView({required this.controller, Key? key}) : super(key: key);
+class DeviceListView extends GetView<DeviceController> {
+  const DeviceListView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _buildSearchBar(),
-        _buildTableHeader(context),
-        Expanded(
-          child: Obx(() {
-            if (controller.isLoading.value) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (controller.devices.isEmpty) {
-              return Center(
-                child: Text(
-                  'no_devices_found'.tr,
-                  style: const TextStyle(fontSize: 18, color: Colors.grey),
-                ),
-              );
-            }
-
-            return ListView.builder(
-              itemCount: controller.devices.length,
-              itemBuilder: (context, index) {
-                return _buildDeviceItem(context, controller.devices[index]);
-              },
-            );
-          }),
+    return Scaffold(
+      // 添加 Scaffold
+      appBar: AppBar(
+        // 添加 AppBar
+        leading: IconButton(
+          // 添加返回按钮
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ), // 您可以自定义图标和颜色
+          onPressed: () => Get.back(), // 点击时返回上一页
         ),
-      ],
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: '请输入设备型号或Mac地址查询',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey[100],
-              ),
-              onChanged: (value) {
-                // TODO: 实现搜索功能
-              },
+        title: const Text(
+          'Devices', // AppBar 标题
+          style: TextStyle(color: Colors.black), // 您可以自定义样式
+        ),
+        backgroundColor: Colors.white, // AppBar 背景色
+        elevation: 0.5, // AppBar 阴影
+        scrolledUnderElevation: 1, // 滑动时 AppBar 的阴影
+      ),
+      body: SafeArea(
+        // SafeArea 保持在AppBar下方
+        child: Column(
+          children: [
+            // _buildSearchBar(), // 如果您有搜索栏
+            _buildTableHeader(context),
+            Expanded(
+              child: Obx(() {
+                if (controller.isLoading.value &&
+                    controller.state.deviceList.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (controller.state.deviceList.isEmpty) {
+                  return const Center(child: Text('没有找到设备'));
+                }
+                // return ListView.builder(
+                //   itemCount: controller.state.deviceList.length,
+                //   itemBuilder: (context, index) {
+                //     final device = controller.state.deviceList[index];
+                //     return _buildDeviceItem(context, device);
+                //   },
+                // );
+                // 如果您使用 SmartRefresher，请确保它在这里
+                return SmartRefresher(
+                  controller: controller.refreshController,
+                  enablePullUp: true, // 根据需要启用上拉加载
+                  onRefresh: controller.onRefresh,
+                  onLoading: controller.onLoading, // 如果实现了分页加载
+                  header: const WaterDropHeader(), // 或其他刷新头部
+                  // footer: ClassicFooter(), // 或其他加载更多尾部
+                  child: ListView.builder(
+                    itemCount: controller.state.deviceList.length,
+                    itemBuilder: (context, index) {
+                      final device = controller.state.deviceList[index];
+                      return _buildDeviceItem(context, device);
+                    },
+                  ),
+                );
+              }),
             ),
-          ),
-          const SizedBox(width: 16),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF6C5CE7),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            ),
-            onPressed: () {
-              // TODO: 实现搜索功能
-            },
-            child: const Text('搜索'),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
+
+  // ... _buildSearchBar, _buildTableHeader, _headerText, _buildDeviceItem 方法保持不变 ...
+  // 确保这些辅助方法存在于您的视图文件中
 
   Widget _buildTableHeader(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
+        color: Colors.grey[100], // 表头背景色
+        border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
       ),
       child: Row(
         children: [
-          SizedBox(width: 50, child: _headerText('选择')),
-          Expanded(flex: 2, child: _headerText('设备型号')),
-          Expanded(child: _headerText('固件版本')),
-          Expanded(flex: 2, child: _headerText('Mac地址')),
-          Expanded(flex: 2, child: _headerText('绑定时间')),
-          Expanded(flex: 2, child: _headerText('最近对话')),
-          Expanded(child: _headerText('备注')),
-          Expanded(child: _headerText('OTA升级')),
-          SizedBox(width: 80, child: _headerText('操作')),
+          Expanded(flex: 2, child: _headerText('Name')),
+          Expanded(flex: 2, child: _headerText('Version')),
+          Expanded(flex: 2, child: _headerText('MAC')),
+
+          SizedBox(
+            width: 100,
+            child: _headerText('Action', textAlign: TextAlign.center),
+          ),
         ],
       ),
     );
   }
 
-  Widget _headerText(String text) {
+  Widget _headerText(String text, {TextAlign textAlign = TextAlign.left}) {
     return Text(
       text,
-      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-      textAlign: TextAlign.center,
+      style: const TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+        color: Colors.black87,
+      ),
+      textAlign: textAlign,
     );
   }
 
   Widget _buildDeviceItem(BuildContext context, Device device) {
-    final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
-    bool isAutoUpdate =
-        device.type == 'autoUpdate' && device.status == 'Connected';
+    final DateFormat formatter = DateFormat('yy-MM-dd HH:mm');
+    // int isAutoUpdate = device.autoUpdate;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 50,
-            child: Checkbox(
-              value: false,
-              onChanged: (value) {
-                // TODO: 实现选择功能
-              },
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(device.name, textAlign: TextAlign.center),
-          ),
-          Expanded(
-            child: Text('appVersion' ?? '1.6.0', textAlign: TextAlign.center),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(device.id, textAlign: TextAlign.center),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              formatter.format(device.createdAt),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              device.lastConnectedAt != null
-                  ? formatter.format(device.lastConnectedAt!)
-                  : '-',
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Expanded(
-            child: IconButton(
-              icon: const Icon(Icons.edit_note, color: Colors.blue),
-              onPressed: () {
-                // TODO: 实现备注编辑功能
-              },
-            ),
-          ),
-          Expanded(
-            child: Switch(
-              value: isAutoUpdate,
-              activeColor: Colors.green,
-              onChanged: (bool value) {
-                // TODO: 实现自动更新切换
-              },
-            ),
-          ),
-          SizedBox(
-            width: 80,
-            child: TextButton(
-              child: const Text('解绑', style: TextStyle(color: Colors.blue)),
-              onPressed: () {
-                _showUnbindConfirmation(context, device.id);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showUnbindConfirmation(BuildContext context, String deviceId) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('解绑确认'.tr),
-          content: Text('您确定要解绑此设备吗？该操作不可撤销。'.tr),
-          actions: <Widget>[
-            TextButton(
-              child: Text('取消'.tr),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('确认解绑'.tr, style: const TextStyle(color: Colors.red)),
-              onPressed: () {
-                Navigator.of(context).pop();
-                controller.deleteDevice(deviceId).then((_) {
-                  Get.snackbar(
-                    '操作成功'.tr,
-                    '设备已解绑'.tr,
-                    snackPosition: SnackPosition.BOTTOM,
-                  );
-                });
-              },
-            ),
-          ],
-        );
+    return InkWell(
+      onTap: () {
+        // Get.toNamed(AppRoutes.DeviceDetail, arguments: {'deviceId': device.id});
+        print("Tapped on device: ${device.id}");
       },
-    );
-  }
-}
-
-// 设备详情视图
-class DeviceDetailView extends StatelessWidget {
-  final Device device;
-  final DeviceController controller;
-
-  const DeviceDetailView({
-    required this.device,
-    required this.controller,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
-
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Text(device.board, style: const TextStyle(fontSize: 13)),
+            ),
+            Expanded(
+              flex: 2,
+              child: Text(
+                device.appVersion,
+                style: const TextStyle(fontSize: 13),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Text(device.id, style: const TextStyle(fontSize: 13)),
+            ), // Assuming id is macAddress for now
+            // Placeholder for alias
+            SizedBox(
+              width: 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('设备详情', style: Theme.of(context).textTheme.titleLarge),
-                  const Divider(),
-                  _buildInfoRow('设备型号', device.name),
-                  _buildInfoRow('Mac地址', device.id),
-                  _buildInfoRow('固件版本', '1.6.0'),
-                  _buildInfoRow('绑定时间', formatter.format(device.createdAt)),
-                  _buildInfoRow(
-                    '最近对话',
-                    device.lastConnectedAt != null
-                        ? formatter.format(device.lastConnectedAt!)
-                        : '-',
+                  TextButton(
+                    onPressed: () {
+                      // controller.showUnbindConfirmation(context, device.id);
+                      print("Unbind device: ${device.id}");
+                    },
+                    child: const Text(
+                      'Unbind',
+                      style: TextStyle(color: Colors.red, fontSize: 13),
+                    ),
                   ),
-                  _buildInfoRow(
-                    'OTA自动升级',
-                    device.type == 'autoUpdate' && device.status == 'Connected'
-                        ? '开启'
-                        : '关闭',
-                  ),
-                  if (device.status == 'Connected')
-                    _buildInfoRow('设备状态', '在线', valueColor: Colors.green)
-                  else
-                    _buildInfoRow('设备状态', '离线', valueColor: Colors.grey),
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          if (device.id.isNotEmpty)
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('操作', style: Theme.of(context).textTheme.titleLarge),
-                    const Divider(),
-                    ButtonBar(
-                      alignment: MainAxisAlignment.start,
-                      children: [
-                        ElevatedButton.icon(
-                          icon: const Icon(Icons.refresh),
-                          label: const Text('刷新设备状态'),
-                          onPressed: () {
-                            controller.fetchDevices();
-                            Get.snackbar(
-                              '操作提示',
-                              '正在刷新设备状态...',
-                              snackPosition: SnackPosition.BOTTOM,
-                            );
-                          },
-                        ),
-                        ElevatedButton.icon(
-                          icon: const Icon(Icons.link_off),
-                          label: const Text('解除绑定'),
-                          onPressed: () {
-                            _showUnbindConfirmation(context, device.id);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            foregroundColor: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(String label, String value, {Color? valueColor}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 120,
-            child: Text(
-              label,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.grey[700],
-              ),
-            ),
-          ),
-          Expanded(child: Text(value, style: TextStyle(color: valueColor))),
-        ],
-      ),
-    );
-  }
-
-  void _showUnbindConfirmation(BuildContext context, String deviceId) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('解绑确认'),
-          content: const Text('您确定要解绑此设备吗？该操作不可撤销。'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('取消'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('确认解绑', style: TextStyle(color: Colors.red)),
-              onPressed: () {
-                Navigator.of(context).pop();
-                controller.deleteDevice(deviceId).then((_) {
-                  Get.snackbar(
-                    '操作成功',
-                    '设备已解绑',
-                    snackPosition: SnackPosition.BOTTOM,
-                  );
-                  Navigator.of(context).pop(); // 返回设备列表
-                });
-              },
-            ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 }

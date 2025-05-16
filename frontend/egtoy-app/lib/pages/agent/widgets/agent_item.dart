@@ -1,9 +1,11 @@
+import 'package:egtoy/common/routers/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:egtoy/common/entities/entities.dart';
 import 'package:egtoy/common/utils/utils.dart';
 import 'package:egtoy/common/values/values.dart';
 import 'package:egtoy/common/widgets/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 Widget agentListItem(AgentItem item) {
   return Container(
@@ -101,11 +103,16 @@ Widget agentListItem(AgentItem item) {
                     Spacer(),
                     InkWell(
                       child: Icon(
-                        Icons.more_horiz,
+                        Icons.devices,
                         color: AppColors.primaryText,
                         size: 24.sp,
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed(
+                          AppRoutes.Device,
+                          arguments: {'agentId': item.id},
+                        );
+                      },
                     ),
                   ],
                 ),

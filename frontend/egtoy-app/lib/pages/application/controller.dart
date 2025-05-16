@@ -99,7 +99,7 @@ class ApplicationController extends GetxController {
     // handleIncomingLinks();
 
     // 准备一些静态数据
-    tabTitles = ['Agent', 'Welcome', 'Bookmarks', 'My'];
+    tabTitles = ['Agent', 'Wallet', 'NFT', 'My'];
     bottomTabs = <BottomNavigationBarItem>[
       new BottomNavigationBarItem(
         icon: Icon(Iconfont.grid, color: AppColors.tabBarElement),

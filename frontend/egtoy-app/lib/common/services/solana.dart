@@ -1,8 +1,9 @@
 import 'package:solana/solana.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:get/get.dart';
 
-class SolanaService {
+class SolanaService extends GetxService {
   late final SolanaClient _client;
 
   SolanaService({bool devnet = true}) {
