@@ -57,6 +57,12 @@ Check out our demonstration video:
 
 [![EGToy Demo Video](https://img.youtube.com/vi/eEPBRKphNhA/0.jpg)](https://www.youtube.com/watch?v=eEPBRKphNhA)
 
+## Whitepaper
+
+Read our detailed whitepaper to learn more about the EGToy project:
+
+*   **Whitepaper**: [Read the EGToy Whitepaper](doc/whitepaper.md)
+
 ## Connect With Us
 
 Join our community and stay updated with the latest news:
