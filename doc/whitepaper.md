@@ -112,13 +112,24 @@ More than a toy, EGToy is an ecosystem that connects humans, pets, devices, and 
 | In-app Payments            | Buy accessories, NFTs, or services              |
 | Staking                    | Yield for long-term holders                     |
 
-### Token Allocation (Illustrative)
+### Token Allocation
 
-- Community Rewards: 40%  
-- Team & Advisors: 20% (vested)  
-- Strategic Partners: 15%  
-- Public Launch & Airdrops: 10%  
-- Ecosystem Growth Fund: 15%
+**Token Name:** EGT
+**Total Supply:** 1,000,000,000 EGT
+
+| Category                | Allocation | Token Amount    |
+|-------------------------|------------|-----------------|
+| Seed Round              | 5%         | 50,000,000      |
+| Strategic Round         | 10%        | 100,000,000     |
+| Advisor/Partner         | 8%         | 80,000,000      |
+| IEO/IDO                 | 2%         | 20,000,000      |
+| GameFi Incentives       | 15%        | 150,000,000     |
+| Staking                 | 10%        | 100,000,000     |
+| Eco/Vault               | 20%        | 200,000,000     |
+| Airdrop                 | 4%         | 40,000,000      |
+| Team                    | 18%        | 180,000,000     |
+| Community & Social      | 8%         | 80,000,000      |
+| **Total**               | **100%**   | **1,000,000,000** |
 
 ---
 
