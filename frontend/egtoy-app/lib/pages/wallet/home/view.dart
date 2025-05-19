@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:egtoy/pages/wallet/import/index.dart'; // 确保 WalletController 在这里或全局注册
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:egtoy/common/routers/routes.dart';
 
 class WalletHomePage extends StatelessWidget {
   const WalletHomePage({super.key});
@@ -44,6 +45,7 @@ class WalletHomePage extends StatelessWidget {
             ),
             onPressed: () {
               // TODO: 实现扫描二维码功能
+              controller.history();
             },
           ),
           IconButton(
@@ -53,6 +55,7 @@ class WalletHomePage extends StatelessWidget {
             ), // 图标颜色改为黑色
             onPressed: () {
               // TODO: 跳转到设置页面
+              final result = Get.toNamed(AppRoutes.Wallet);
             },
           ),
         ],
@@ -184,6 +187,18 @@ class WalletHomePage extends StatelessWidget {
                               labelColor: Colors.black87, // 标签文本颜色改为黑色系
                               onTap: () {
                                 // TODO: Implement Send action
+                                // 跳转到代币选择页面
+                                final selectedToken = Get.toNamed(
+                                  AppRoutes.TokenSelection,
+                                );
+
+                                // if (selectedToken != null && selectedToken is YourTokenInfoClass) {
+                                //   // 用户选择了代币，现在跳转到发送页面，并传递代币信息
+                                //   Get.toNamed(AppRoutes.TokenSend, arguments: {'tokenInfo': selectedToken});
+                                // } else {
+                                //   // 用户可能没有选择代币就返回了
+                                //   print("Token selection cancelled or no token selected.");
+                                // }
                               },
                             ),
                           ],

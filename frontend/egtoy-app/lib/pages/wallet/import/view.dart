@@ -57,6 +57,7 @@ class _ImportWalletPageState extends State<ImportWalletPage> {
         STORAGE_USER_WALLET_ADDRESS_KEY,
         wallet.address,
       );
+      _walletService.setCurrentWallet(wallet);
       Get.back(result: wallet);
     } catch (e) {
       _errorMessage.value = 'Failed to import wallet'.tr + ': ${e.toString()}';

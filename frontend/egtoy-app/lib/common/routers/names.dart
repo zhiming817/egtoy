@@ -21,4 +21,7 @@ class AppRoutes {
   static const FEEDBACK = '/feedback';
   static const ABOUT = '/about';
   static const SETTINGS = '/settings';
+
+  static const TokenSelection = '/token_selection'; // 代币选择页面
+  static const TokenSend = '/token_send'; // 代币发送页面
 }

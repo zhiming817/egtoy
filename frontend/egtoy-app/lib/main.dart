@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
           builder: EasyLoading.init(),
-          translations: AppTranslations(),
+
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
           supportedLocales: const [Locale('en', 'US'), Locale('zh', 'CN')],
           locale: ConfigStore.to.locale,
           fallbackLocale: const Locale('en', 'US'),
+          translations: AppTranslations(),
           enableLog: true,
           logWriterCallback: Logger.write,
         );

@@ -12,6 +12,8 @@ import 'package:egtoy/pages/frame/sign_up/index.dart';
 import 'package:egtoy/pages/frame/welcome/index.dart';
 import 'package:egtoy/pages/wallet/import/index.dart';
 import 'package:egtoy/pages/wallet/home/index.dart';
+import 'package:egtoy/pages/wallet/select/index.dart';
+import 'package:egtoy/pages/wallet/send/index.dart';
 import 'package:egtoy/pages/my/index.dart';
 import 'package:get/get.dart';
 
@@ -62,6 +64,16 @@ class AppPages {
       name: AppRoutes.WalletHome,
       page: () => WalletHomePage(),
       binding: WalletBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.TokenSelection,
+      page: () => TokenSelectionPage(),
+      binding: SelectBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.TokenSend,
+      page: () => TokenSendPage(),
+      binding: SendBinding(),
     ),
     GetPage(
       name: AppRoutes.Device,

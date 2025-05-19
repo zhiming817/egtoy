@@ -131,6 +131,10 @@ class WalletController extends GetxController {
   }
 
   Future<void> refreshBalance() async {
+    print("refreshBalance");
+
+    _currentWallet.value = walletService.getCurrentWallet();
+    print("_currentWallet: ${_currentWallet.value}");
     if (_currentWallet.value == null) {
       Get.snackbar('提示', '请先创建或导入钱包');
       return;
@@ -139,7 +143,9 @@ class WalletController extends GetxController {
     isLoading.value = true;
 
     try {
+      checkWallet();
       final address = await _currentWallet.value!.publicKey.toBase58();
+      print("address:" + address);
       final balanceValue = await solanaService.getBalance(address);
 
       // 刷新EGT代币余额
@@ -166,6 +172,17 @@ class WalletController extends GetxController {
     _currentWallet.value = wallet;
     walletService.setCurrentWallet(wallet);
     checkWallet();
+  }
+
+  Future<void> history() async {
+    await solanaService
+        .getTransactionHistory(walletAddress.value)
+        .then((value) {
+          print("交易记录: $value");
+        })
+        .catchError((error) {
+          print("获取交易记录失败: $error");
+        });
   }
 
   // 执行注册操作

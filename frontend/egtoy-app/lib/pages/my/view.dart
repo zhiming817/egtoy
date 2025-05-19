@@ -72,49 +72,6 @@ class MyPage extends GetView<MyController> {
                   ),
                 ),
                 SizedBox(height: 5.h),
-                // Obx 用于监听 controller.walletAddress 的变化
-                Obx(() {
-                  final String walletAddr = controller.walletAddress.value;
-                  // 检查钱包地址是否是 "未连接钱包" 的翻译（即使我们现在不用 .tr，controller 可能仍然设置这个值）
-                  // 或者直接检查是否为空或特定占位符
-                  final String notConnectedPlaceholder =
-                      'wallet_not_connected'.tr; // 获取 "未连接钱包" 的当前翻译以进行比较
-                  // 或者使用一个固定的英文占位符，如果 controller 也改了的话
-                  if (walletAddr.isNotEmpty &&
-                      walletAddr != notConnectedPlaceholder &&
-                      walletAddr != "Wallet not connected") {
-                    // 增加一个直接的英文检查
-                    return GestureDetector(
-                      onTap: () => controller.copyToClipboard(walletAddr),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            walletAddr.length >= 10
-                                ? '${walletAddr.substring(0, 6)}...${walletAddr.substring(walletAddr.length - 4)}'
-                                : walletAddr,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                              color: AppColors.secondaryText,
-                            ),
-                          ),
-                          SizedBox(width: 5.w),
-                          const Icon(Icons.copy, size: 14),
-                        ],
-                      ),
-                    );
-                  } else {
-                    // 可以选择显示 "Wallet not connected" 或不显示任何内容
-                    return Text(
-                      "Wallet not connected", // 直接显示英文
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: AppColors.secondaryText,
-                      ),
-                    );
-                  }
-                }),
               ],
             ),
           ),
@@ -312,7 +269,7 @@ class MyPage extends GetView<MyController> {
         child: Column(
           children: [
             _buildUserHeader(),
-            _buildWalletSection(),
+            //_buildWalletSection(),
             _buildSettingsSection(),
             _buildSupportSection(),
             _buildLogoutButton(),
