@@ -1,17 +1,41 @@
 // 注册请求
 class UserRegisterRequestEntity {
-  String email;
+  String username;
   String password;
+  String captcha;
+  String captchaId;
 
-  UserRegisterRequestEntity({required this.email, required this.password});
+  UserRegisterRequestEntity({
+    required this.username,
+    required this.password,
+    required this.captcha,
+    required this.captchaId,
+  });
 
-  factory UserRegisterRequestEntity.fromJson(Map<String, dynamic> json) =>
-      UserRegisterRequestEntity(
-        email: json["email"],
-        password: json["password"],
+  factory UserRegisterRequestEntity.fromJson(Map<String, dynamic> json) {
+    // 添加检查以确保关键字段存在且不为null
+    if (json["username"] == null ||
+        json["password"] == null ||
+        json["captcha"] == null ||
+        json["captchaId"] == null) {
+      throw FormatException(
+        "One or more required fields (username, password, captcha, captchaId) are missing or null in the JSON data for UserRegisterRequestEntity.",
       );
+    }
+    return UserRegisterRequestEntity(
+      username: json["username"] as String,
+      password: json["password"] as String,
+      captcha: json["captcha"] as String,
+      captchaId: json["captchaId"] as String,
+    );
+  }
 
-  Map<String, dynamic> toJson() => {"email": email, "password": password};
+  Map<String, dynamic> toJson() => {
+    "username": username,
+    "password": password,
+    "captcha": captcha,
+    "captchaId": captchaId,
+  };
 }
 
 // 登录请求

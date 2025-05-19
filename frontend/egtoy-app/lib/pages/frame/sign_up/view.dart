@@ -34,17 +34,12 @@ class SignUpPage extends GetView<SignUpController> {
       child: Column(
         children: [
           // fullName input
-          inputTextEdit(
-            controller: controller.fullnameController,
-            keyboardType: TextInputType.text,
-            hintText: "Full name",
-            marginTop: 0,
-          ),
+
           // email input
           inputTextEdit(
-            controller: controller.emailController,
-            keyboardType: TextInputType.emailAddress,
-            hintText: "Email",
+            controller: controller.userNameController,
+            keyboardType: TextInputType.name,
+            hintText: "User Name",
           ),
           // password input
           inputTextEdit(
@@ -53,7 +48,58 @@ class SignUpPage extends GetView<SignUpController> {
             hintText: "Password",
             isPassword: true,
           ),
-
+          // 验证码输入框
+          Container(
+            height: 44.h,
+            margin: EdgeInsets.only(top: 15.h),
+            child: Row(
+              children: [
+                // 验证码输入字段
+                Expanded(
+                  child: inputTextEdit(
+                    controller: controller.captchaController,
+                    keyboardType: TextInputType.text,
+                    hintText: "verification_code".tr, // 使用国际化键
+                    marginTop: 0,
+                  ),
+                ),
+                // 验证码图片
+                Container(
+                  margin: EdgeInsets.only(left: 10.w),
+                  width: 100.w,
+                  height: 44.h,
+                  child: Obx(
+                    () => GestureDetector(
+                      onTap: () => controller.refreshCaptcha(),
+                      child: Image.network(
+                        "${SERVER_API_URL}/user/captcha?uuid=${controller.captchaUuid.value}",
+                        fit: BoxFit.fill,
+                        // 如果图片加载失败，显示刷新图标
+                        errorBuilder: (context, error, stackTrace) {
+                          return Center(
+                            child: Icon(Icons.refresh, color: Colors.grey),
+                          );
+                        },
+                        // 加载中显示进度条
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value:
+                                  loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           // 创建
           Container(
             height: 44.h,

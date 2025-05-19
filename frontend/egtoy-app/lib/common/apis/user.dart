@@ -16,14 +16,14 @@ class UserAPI {
   }
 
   /// 注册
-  static Future<UserRegisterRequestEntity> register({
+  static Future<UserLoginResponseEntity> register({
     UserRegisterRequestEntity? params,
   }) async {
     var response = await HttpUtil().post(
       '/user/register',
       data: params?.toJson(),
     );
-    return UserRegisterRequestEntity.fromJson(response);
+    return UserLoginResponseEntity.fromJson(response);
   }
 
   static Future<UserLoginResponseEntity> web3Login({
